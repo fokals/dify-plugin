@@ -29,6 +29,9 @@ meta:
 tags:
   - business
   - search
+network:
+  domains:
+    - api.fokals.com
 privacy: PRIVACY.md
 repo: https://github.com/fokals/dify-plugin
 contact: partners@fokals.com
