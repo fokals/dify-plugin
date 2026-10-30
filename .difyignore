@@ -183,6 +183,7 @@ tests/
 .venv/
 .git/
 .gitignore
+.gitattributes
 .difyignore
 *.difypkg
 validation-report/
