@@ -1,0 +1,34 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: sales_team
+  author: fokals
+  label:
+    en_US: Sales team from job ads
+description:
+  human:
+    en_US: 'The sales team each of the person''s companies is building, as its own job ads show it: open sales roles now by role (SDR or BDR, account executive, account manager, sales engineer, sales leadership, sales operations,...'
+  llm: 'The sales team each of the person''s companies is building, as its own job ads show it: open sales roles now by role (SDR or BDR, account executive, account manager, sales engineer, sales leadership, sales operations, partnerships), by the customer segment they sell to and by country; the median base and on-target pay the ads state, by role; the sales tools the ads name; the last twelve closed weeks; and the latest open sales postings with what each states (base, on-target pay, quota, ramp, where leads come from). Pay is what an ad offers, not what is paid. Use it to size a sales team, see where it is expanding or moving upmarket, or benchmark an offer. A company with no sales postings costs nothing and is named as such. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: companies
+  required: true
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. At most 25 a call. Separated by commas.
+  llm_description: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. At most 25 a call. Separated by commas.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/sales_team.py

@@ -1,0 +1,79 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: listed_securities
+  author: fokals
+  label:
+    en_US: Stock listings
+description:
+  human:
+    en_US: 'The equity listings held, a page at a time: each with its name, ticker, exchange and market code, its global identifiers (FIGI and share class FIGI, ISIN, LEI), the issuer''s country, the type of security, whether it i...'
+  llm: 'The equity listings held, a page at a time: each with its name, ticker, exchange and market code, its global identifiers (FIGI and share class FIGI, ISIN, LEI), the issuer''s country, the type of security, whether it is active or delisted, and the company it belongs to where one is held. Narrow it by exchange, country or status. Use it to map a portfolio or an index to companies. Listings that match no company cost nothing. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: exchange
+  required: false
+  form: llm
+  label:
+    en_US: Exchange
+  type: string
+  human_description:
+    en_US: 'Only listings on this exchange, by its code: "US", "LN", or a market code such as "XNAS".'
+  llm_description: 'Only listings on this exchange, by its code: "US", "LN", or a market code such as "XNAS".'
+- name: country
+  required: false
+  form: llm
+  label:
+    en_US: Country
+  type: string
+  human_description:
+    en_US: Only listings of issuers from this country, as a two-letter code.
+  llm_description: Only listings of issuers from this country, as a two-letter code.
+- name: status
+  required: false
+  form: llm
+  label:
+    en_US: Status
+  type: select
+  options:
+  - value: active
+    label:
+      en_US: active
+  - value: delisted
+    label:
+      en_US: delisted
+  human_description:
+    en_US: active or delisted. Both unless given.
+  llm_description: active or delisted. Both unless given.
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: How many listings to return. 50 unless given, 100 at most.
+  llm_description: How many listings to return. 50 unless given, 100 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/listed_securities.py

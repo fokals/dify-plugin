@@ -1,0 +1,68 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: list_filters
+  author: fokals
+  label:
+    en_US: List filter values
+description:
+  human:
+    en_US: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the he...'
+  llm: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the head office''s country where it is known, otherwise the main market the company''s website serves), and the types of announcement. Also what market_trends and market_movers can measure, with how each can be cut and its subjects, and the sales roles. Free.'
+parameters:
+- name: kind
+  required: true
+  form: llm
+  label:
+    en_US: Kind
+  type: select
+  options:
+  - value: technologies
+    label:
+      en_US: technologies
+  - value: buying_topics
+    label:
+      en_US: buying_topics
+  - value: industries
+    label:
+      en_US: industries
+  - value: business_models
+    label:
+      en_US: business_models
+  - value: countries
+    label:
+      en_US: countries
+  - value: announcement_types
+    label:
+      en_US: announcement_types
+  - value: market_measures
+    label:
+      en_US: market_measures
+  - value: sales_roles
+    label:
+      en_US: sales_roles
+  human_description:
+    en_US: Which list to return.
+  llm_description: Which list to return.
+- name: search
+  required: false
+  form: llm
+  label:
+    en_US: Search
+  type: string
+  human_description:
+    en_US: 'Text a name holds. Needed for technologies beyond the most used: there are thousands.'
+  llm_description: 'Text a name holds. Needed for technologies beyond the most used: there are thousands.'
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 200
+  human_description:
+    en_US: How many to return. 50 unless given.
+  llm_description: How many to return. 50 unless given.
+extra:
+  python:
+    source: tools/list_filters.py

@@ -1,0 +1,14 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: account_balance
+  author: fokals
+  label:
+    en_US: Balance and prices
+description:
+  human:
+    en_US: The person's prepaid balance and the dates it expires, what they have spent this month and on which tools, their monthly spending limit, the prices, and where to add funds.
+  llm: The person's prepaid balance and the dates it expires, what they have spent this month and on which tools, their monthly spending limit, the prices, and where to add funds. Free.
+parameters: []
+extra:
+  python:
+    source: tools/account_balance.py

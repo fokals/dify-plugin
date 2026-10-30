@@ -1,0 +1,214 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: market_trends
+  author: fokals
+  label:
+    en_US: Market trends over time
+description:
+  human:
+    en_US: 'How a measure of the market has moved over time, newest first: hiring (new, closed and open roles, pay, seniority, work mode, functions, AI roles), sales hiring and pay, technologies taken up, dropped and in use, page...'
+  llm: 'How a measure of the market has moved over time, newest first: hiring (new, closed and open roles, pay, seniority, work mode, functions, AI roles), sales hiring and pay, technologies taken up, dropped and in use, pages, markets and languages added, website moves, announcements, buying topics surging, traffic, headcount and stock listings. Each figure is a count, the number of companies it is out of, the rate, the rate the window before, the growth between them, and an index. Cut it by industry, sector, country, company size or exchange, and follow one subject such as a technology. Use it to see what is growing in a market and where. It returns figures, not companies. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: measure
+  required: true
+  form: llm
+  label:
+    en_US: Measure
+  type: select
+  options:
+  - value: hiring_new
+    label:
+      en_US: hiring_new
+  - value: hiring_closed
+    label:
+      en_US: hiring_closed
+  - value: hiring_open
+    label:
+      en_US: hiring_open
+  - value: hiring_net
+    label:
+      en_US: hiring_net
+  - value: pay_median
+    label:
+      en_US: pay_median
+  - value: seniority_share
+    label:
+      en_US: seniority_share
+  - value: work_mode_share
+    label:
+      en_US: work_mode_share
+  - value: function_share
+    label:
+      en_US: function_share
+  - value: ai_role_share
+    label:
+      en_US: ai_role_share
+  - value: sales_share
+    label:
+      en_US: sales_share
+  - value: sales_segment_share
+    label:
+      en_US: sales_segment_share
+  - value: sales_lead_source_share
+    label:
+      en_US: sales_lead_source_share
+  - value: sales_ote_median
+    label:
+      en_US: sales_ote_median
+  - value: sales_base_median
+    label:
+      en_US: sales_base_median
+  - value: tech_added
+    label:
+      en_US: tech_added
+  - value: tech_removed
+    label:
+      en_US: tech_removed
+  - value: tech_prevalence
+    label:
+      en_US: tech_prevalence
+  - value: gtm_page_added
+    label:
+      en_US: gtm_page_added
+  - value: market_added
+    label:
+      en_US: market_added
+  - value: language_added
+    label:
+      en_US: language_added
+  - value: replatformed
+    label:
+      en_US: replatformed
+  - value: news_event
+    label:
+      en_US: news_event
+  - value: intent_surge
+    label:
+      en_US: intent_surge
+  - value: traffic_up
+    label:
+      en_US: traffic_up
+  - value: traffic_down
+    label:
+      en_US: traffic_down
+  - value: headcount_change_median
+    label:
+      en_US: headcount_change_median
+  - value: listings_new
+    label:
+      en_US: listings_new
+  - value: listings_delisted
+    label:
+      en_US: listings_delisted
+  human_description:
+    en_US: What is measured. list_filters with kind market_measures lists them with what each counts.
+  llm_description: What is measured. list_filters with kind market_measures lists them with what each counts.
+- name: subject
+  required: false
+  form: llm
+  label:
+    en_US: Subject
+  type: string
+  human_description:
+    en_US: 'For a measure with subjects, which one: a technology ("HubSpot"), a seniority, a work mode, a job function, a type of announcement, a buying topic, a customer segment, a lead source or a page, by name. Every subject unless given.'
+  llm_description: 'For a measure with subjects, which one: a technology ("HubSpot"), a seniority, a work mode, a job function, a type of announcement, a buying topic, a customer segment, a lead source or a page, by name. Every subject unless given.'
+- name: by
+  required: false
+  form: llm
+  label:
+    en_US: By
+  type: select
+  options:
+  - value: all
+    label:
+      en_US: all
+  - value: industry
+    label:
+      en_US: industry
+  - value: sector
+    label:
+      en_US: sector
+  - value: country
+    label:
+      en_US: country
+  - value: size
+    label:
+      en_US: size
+  - value: market
+    label:
+      en_US: market
+  human_description:
+    en_US: 'How the market is cut: all (the whole index, unless given), industry, sector, country, size (by employees) or market (a stock exchange, listed companies only).'
+  llm_description: 'How the market is cut: all (the whole index, unless given), industry, sector, country, size (by employees) or market (a stock exchange, listed companies only).'
+- name: value
+  required: false
+  form: llm
+  label:
+    en_US: Value
+  type: string
+  human_description:
+    en_US: 'With by, one value of it: an industry id, a sector, a two-letter country code, a size band (1-10, 11-50, 51-200, 201-1000, 1001-5000, 5000+) or an exchange code. Every value unless given.'
+  llm_description: 'With by, one value of it: an industry id, a sector, a two-letter country code, a size band (1-10, 11-50, 51-200, 201-1000, 1001-5000, 5000+) or an exchange code. Every value unless given.'
+- name: window
+  required: false
+  form: llm
+  label:
+    en_US: Window
+  type: number
+  min: 7
+  max: 365
+  human_description:
+    en_US: 'The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.'
+  llm_description: 'The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.'
+- name: since
+  required: false
+  form: llm
+  label:
+    en_US: Since
+  type: string
+  human_description:
+    en_US: Only figures as of this day or later, YYYY-MM-DD.
+  llm_description: Only figures as of this day or later, YYYY-MM-DD.
+- name: until
+  required: false
+  form: llm
+  label:
+    en_US: Until
+  type: string
+  human_description:
+    en_US: Only figures as of this day or earlier, YYYY-MM-DD.
+  llm_description: Only figures as of this day or earlier, YYYY-MM-DD.
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 200
+  human_description:
+    en_US: How many figures to return. 50 unless given, 200 at most.
+  llm_description: How many figures to return. 50 unless given, 200 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/market_trends.py

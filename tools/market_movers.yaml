@@ -1,0 +1,178 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: market_movers
+  author: fokals
+  label:
+    en_US: Biggest market movers
+description:
+  human:
+    en_US: 'The market figures that moved most on one day, largest growth first, up or down: which industries, countries, company sizes or exchanges saw the biggest change in hiring, technologies taken up or dropped, buying topic...'
+  llm: 'The market figures that moved most on one day, largest growth first, up or down: which industries, countries, company sizes or exchanges saw the biggest change in hiring, technologies taken up or dropped, buying topics surging, traffic and the rest. Keep to one measure or see every one. Use it to spot what is changing fastest in the market right now. It returns figures, not companies. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: measure
+  required: false
+  form: llm
+  label:
+    en_US: Measure
+  type: select
+  options:
+  - value: hiring_new
+    label:
+      en_US: hiring_new
+  - value: hiring_closed
+    label:
+      en_US: hiring_closed
+  - value: hiring_open
+    label:
+      en_US: hiring_open
+  - value: hiring_net
+    label:
+      en_US: hiring_net
+  - value: pay_median
+    label:
+      en_US: pay_median
+  - value: seniority_share
+    label:
+      en_US: seniority_share
+  - value: work_mode_share
+    label:
+      en_US: work_mode_share
+  - value: function_share
+    label:
+      en_US: function_share
+  - value: ai_role_share
+    label:
+      en_US: ai_role_share
+  - value: sales_share
+    label:
+      en_US: sales_share
+  - value: sales_segment_share
+    label:
+      en_US: sales_segment_share
+  - value: sales_lead_source_share
+    label:
+      en_US: sales_lead_source_share
+  - value: sales_ote_median
+    label:
+      en_US: sales_ote_median
+  - value: sales_base_median
+    label:
+      en_US: sales_base_median
+  - value: tech_added
+    label:
+      en_US: tech_added
+  - value: tech_removed
+    label:
+      en_US: tech_removed
+  - value: tech_prevalence
+    label:
+      en_US: tech_prevalence
+  - value: gtm_page_added
+    label:
+      en_US: gtm_page_added
+  - value: market_added
+    label:
+      en_US: market_added
+  - value: language_added
+    label:
+      en_US: language_added
+  - value: replatformed
+    label:
+      en_US: replatformed
+  - value: news_event
+    label:
+      en_US: news_event
+  - value: intent_surge
+    label:
+      en_US: intent_surge
+  - value: traffic_up
+    label:
+      en_US: traffic_up
+  - value: traffic_down
+    label:
+      en_US: traffic_down
+  - value: headcount_change_median
+    label:
+      en_US: headcount_change_median
+  - value: listings_new
+    label:
+      en_US: listings_new
+  - value: listings_delisted
+    label:
+      en_US: listings_delisted
+  human_description:
+    en_US: Only this measure. Every measure unless given.
+  llm_description: Only this measure. Every measure unless given.
+- name: by
+  required: false
+  form: llm
+  label:
+    en_US: By
+  type: select
+  options:
+  - value: all
+    label:
+      en_US: all
+  - value: industry
+    label:
+      en_US: industry
+  - value: sector
+    label:
+      en_US: sector
+  - value: country
+    label:
+      en_US: country
+  - value: size
+    label:
+      en_US: size
+  - value: market
+    label:
+      en_US: market
+  human_description:
+    en_US: 'How the market is cut: industry (unless given), sector, country, size, market or all.'
+  llm_description: 'How the market is cut: industry (unless given), sector, country, size, market or all.'
+- name: window
+  required: false
+  form: llm
+  label:
+    en_US: Window
+  type: number
+  min: 7
+  max: 365
+  human_description:
+    en_US: 'The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.'
+  llm_description: 'The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.'
+- name: as_of
+  required: false
+  form: llm
+  label:
+    en_US: As of
+  type: string
+  human_description:
+    en_US: The day of the figures, YYYY-MM-DD. The latest unless given.
+  llm_description: The day of the figures, YYYY-MM-DD. The latest unless given.
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: How many figures to return. 25 unless given, 100 at most.
+  llm_description: How many figures to return. 25 unless given, 100 at most.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/market_movers.py

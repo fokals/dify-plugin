@@ -1,0 +1,307 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: count_companies
+  author: fokals
+  label:
+    en_US: Count companies
+description:
+  human:
+    en_US: Counts the companies that match a set of filters, and says what it would cost to get them.
+  llm: 'Counts the companies that match a set of filters, and says what it would cost to get them. Free. Takes the same filters as find_companies, but not part of a name: to look for one company, use identify_company. Fewer than 10 is given as such. Use it before find_companies, so the person knows the size and the price of what they are asking for.'
+parameters:
+- name: technology
+  required: false
+  form: llm
+  label:
+    en_US: Technology
+  type: string
+  human_description:
+    en_US: 'A technology the company runs on its website, by name: "Shopify", "HubSpot". The stance a website states towards AI is found the same way: "Blocks GPTBot (OpenAI)", "llms.txt for AI assistants", "WebMCP tools for AI agents".'
+  llm_description: 'A technology the company runs on its website, by name: "Shopify", "HubSpot". The stance a website states towards AI is found the same way: "Blocks GPTBot (OpenAI)", "llms.txt for AI assistants", "WebMCP tools for AI agents".'
+- name: buying_topic
+  required: false
+  form: llm
+  label:
+    en_US: Buying topic
+  type: string
+  human_description:
+    en_US: 'A buying topic the company shows signs of, by name or id: "Marketing automation". list_filters with kind buying_topics has them all.'
+  llm_description: 'A buying topic the company shows signs of, by name or id: "Marketing automation". list_filters with kind buying_topics has them all.'
+- name: hiring
+  required: false
+  form: llm
+  label:
+    en_US: Hiring
+  type: boolean
+  human_description:
+    en_US: true keeps only companies with open roles now.
+  llm_description: true keeps only companies with open roles now.
+- name: industry
+  required: false
+  form: llm
+  label:
+    en_US: Industry
+  type: string
+  human_description:
+    en_US: 'One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+  llm_description: 'One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+- name: business_model
+  required: false
+  form: llm
+  label:
+    en_US: Business model
+  type: string
+  human_description:
+    en_US: 'One of: b2b, b2c, both.'
+  llm_description: 'One of: b2b, b2c, both.'
+- name: country
+  required: false
+  form: llm
+  label:
+    en_US: Country
+  type: string
+  human_description:
+    en_US: 'A country as a two-letter code: US, GB, DE. Matches the head office''s country where it is known, otherwise the main market the company''s website serves: country and market_country in an answer.'
+  llm_description: 'A country as a two-letter code: US, GB, DE. Matches the head office''s country where it is known, otherwise the main market the company''s website serves: country and market_country in an answer.'
+- name: listed
+  required: false
+  form: llm
+  label:
+    en_US: Listed
+  type: boolean
+  human_description:
+    en_US: true keeps only companies with a stock exchange listing, their own or a parent's.
+  llm_description: true keeps only companies with a stock exchange listing, their own or a parent's.
+- name: changed_since
+  required: false
+  form: llm
+  label:
+    en_US: Changed since
+  type: string
+  human_description:
+    en_US: Keeps only companies whose website changed on or after this date, YYYY-MM-DD.
+  llm_description: Keeps only companies whose website changed on or after this date, YYYY-MM-DD.
+- name: region
+  required: false
+  form: llm
+  label:
+    en_US: Region
+  type: string
+  human_description:
+    en_US: 'The state or province of the head office: "CA", "Ontario". Held where a filing or the company''s own website gives it.'
+  llm_description: 'The state or province of the head office: "CA", "Ontario". Held where a filing or the company''s own website gives it.'
+- name: sic
+  required: false
+  form: llm
+  label:
+    en_US: Sic
+  type: string
+  human_description:
+    en_US: A four-digit SIC industry code. Held for companies that file with the SEC.
+  llm_description: A four-digit SIC industry code. Held for companies that file with the SEC.
+- name: announcement
+  required: false
+  form: llm
+  label:
+    en_US: Announcement
+  type: string
+  human_description:
+    en_US: 'A type of announcement the company made lately. One of: product_launch, partnership, acquisition_made, acquired_or_merged, funding_round, leadership_change, layoffs_restructuring, expansion, incident, financial_results, award_or_recognition, regulatory_or_legal.'
+  llm_description: 'A type of announcement the company made lately. One of: product_launch, partnership, acquisition_made, acquired_or_merged, funding_round, leadership_change, layoffs_restructuring, expansion, incident, financial_results, award_or_recognition, regulatory_or_legal.'
+- name: announced_since
+  required: false
+  form: llm
+  label:
+    en_US: Announced since
+  type: string
+  human_description:
+    en_US: 'With announcement: made on or after this date, YYYY-MM-DD. 30 days ago unless given.'
+  llm_description: 'With announcement: made on or after this date, YYYY-MM-DD. 30 days ago unless given.'
+- name: name_contains
+  required: false
+  form: llm
+  label:
+    en_US: Name contains
+  type: string
+  human_description:
+    en_US: Text the company's name or website address holds.
+  llm_description: Text the company's name or website address holds.
+- name: agent_ready_min
+  required: false
+  form: llm
+  label:
+    en_US: Agent ready min
+  type: number
+  min: 50
+  max: 100
+  human_description:
+    en_US: 'Keeps only companies whose agent readiness score is at least this, from 50 to 100. The score, from 0 to 100, says how ready a company''s website is for AI agents: to be found, to show its prices, to sell and to be acted on.'
+  llm_description: 'Keeps only companies whose agent readiness score is at least this, from 50 to 100. The score, from 0 to 100, says how ready a company''s website is for AI agents: to be found, to show its prices, to sell and to be acted on.'
+- name: agent_ready_part
+  required: false
+  form: llm
+  label:
+    en_US: Agent ready part
+  type: select
+  options:
+  - value: find
+    label:
+      en_US: find
+  - value: price
+    label:
+      en_US: price
+  - value: buy
+    label:
+      en_US: buy
+  - value: act
+    label:
+      en_US: act
+  human_description:
+    en_US: 'One of the four parts of agent readiness that must be strong: find, price, buy or act. With agent_ready_min, or alone for a score of 50 or more.'
+  llm_description: 'One of the four parts of agent readiness that must be strong: find, price, buy or act. With agent_ready_min, or alone for a score of 50 or more.'
+- name: agent_ready_part_min
+  required: false
+  form: llm
+  label:
+    en_US: Agent ready part min
+  type: number
+  min: 1
+  max: 25
+  human_description:
+    en_US: 'With agent_ready_part: the least points of its 25 that part holds. 15 unless given.'
+  llm_description: 'With agent_ready_part: the least points of its 25 that part holds. 15 unless given.'
+- name: project
+  required: false
+  form: llm
+  label:
+    en_US: Project
+  type: select
+  options:
+  - value: migration
+    label:
+      en_US: migration
+  - value: first_team
+    label:
+      en_US: first_team
+  - value: compliance
+    label:
+      en_US: compliance
+  - value: expansion
+    label:
+      en_US: expansion
+  - value: ai_build
+    label:
+      en_US: ai_build
+  human_description:
+    en_US: 'A project the company''s job ads state: migration (a move from one system to another), first_team (the first team of a function), compliance (work towards a certification), expansion (into a new country or region), ai_build (building an AI product).'
+  llm_description: 'A project the company''s job ads state: migration (a move from one system to another), first_team (the first team of a function), compliance (work towards a certification), expansion (into a new country or region), ai_build (building an AI product).'
+- name: project_detail
+  required: false
+  form: llm
+  label:
+    en_US: Project detail
+  type: string
+  human_description:
+    en_US: 'With project, what narrows it. migration: a system by name, on either side ("Salesforce"), or "to HubSpot", "from Salesforce", "Salesforce to HubSpot". first_team: a job function (data_analytics, sales). compliance: soc2, iso27001, hipaa, pci, fedramp, gdpr. expansion: a two-letter country code or a region (europe, dach). ai_build: agents, llm, ml, ai.'
+  llm_description: 'With project, what narrows it. migration: a system by name, on either side ("Salesforce"), or "to HubSpot", "from Salesforce", "Salesforce to HubSpot". first_team: a job function (data_analytics, sales). compliance: soc2, iso27001, hipaa, pci, fedramp, gdpr. expansion: a two-letter country code or a region (europe, dach). ai_build: agents, llm, ml, ai.'
+- name: project_days
+  required: false
+  form: llm
+  label:
+    en_US: Project days
+  type: number
+  min: 7
+  max: 365
+  human_description:
+    en_US: 'With project: stated in job ads on a board in the last this many days. 90 unless given.'
+  llm_description: 'With project: stated in job ads on a board in the last this many days. 90 unless given.'
+- name: price_change
+  required: false
+  form: llm
+  label:
+    en_US: Price change
+  type: select
+  options:
+  - value: price_raised
+    label:
+      en_US: price_raised
+  - value: price_cut
+    label:
+      en_US: price_cut
+  - value: free_plan_removed
+    label:
+      en_US: free_plan_removed
+  - value: free_plan_added
+    label:
+      en_US: free_plan_added
+  - value: usage_pricing_added
+    label:
+      en_US: usage_pricing_added
+  - value: ai_addon_added
+    label:
+      en_US: ai_addon_added
+  human_description:
+    en_US: 'A change the company''s pricing page showed lately: price_raised, price_cut, free_plan_removed, free_plan_added, usage_pricing_added, ai_addon_added.'
+  llm_description: 'A change the company''s pricing page showed lately: price_raised, price_cut, free_plan_removed, free_plan_added, usage_pricing_added, ai_addon_added.'
+- name: price_changed_since
+  required: false
+  form: llm
+  label:
+    en_US: Price changed since
+  type: string
+  human_description:
+    en_US: 'With price_change: on or after this date, YYYY-MM-DD. 90 days ago unless given.'
+  llm_description: 'With price_change: on or after this date, YYYY-MM-DD. 90 days ago unless given.'
+- name: health_band
+  required: false
+  form: llm
+  label:
+    en_US: Health band
+  type: select
+  options:
+  - value: distress
+    label:
+      en_US: distress
+  - value: watch
+    label:
+      en_US: watch
+  - value: growing
+    label:
+      en_US: growing
+  - value: breakout
+    label:
+      en_US: breakout
+  human_description:
+    en_US: 'The company''s health in the latest week: distress (signs of distress), watch (worth watching), growing or breakout (breaking out).'
+  llm_description: 'The company''s health in the latest week: distress (signs of distress), watch (worth watching), growing or breakout (breaking out).'
+- name: shift
+  required: false
+  form: llm
+  label:
+    en_US: Shift
+  type: select
+  options:
+  - value: upmarket
+    label:
+      en_US: upmarket
+  - value: downmarket
+    label:
+      en_US: downmarket
+  - value: ai_pivot
+    label:
+      en_US: ai_pivot
+  - value: new_buyer
+    label:
+      en_US: new_buyer
+  - value: price_up
+    label:
+      en_US: price_up
+  - value: price_down
+    label:
+      en_US: price_down
+  human_description:
+    en_US: 'A shift in positioning the company shows in the latest week: upmarket, downmarket, ai_pivot (turning to AI), new_buyer (selling to a new buyer), price_up or price_down.'
+  llm_description: 'A shift in positioning the company shows in the latest week: upmarket, downmarket, ai_pivot (turning to AI), new_buyer (selling to a new buyer), price_up or price_down.'
+extra:
+  python:
+    source: tools/count_companies.py

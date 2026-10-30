@@ -1,0 +1,23 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: identify_company
+  author: fokals
+  label:
+    en_US: Which company is meant
+description:
+  human:
+    en_US: Lists the companies a name or a website address could mean, the surest first, each with its website, its country and whether it has been read.
+  llm: Lists the companies a name or a website address could mean, the surest first, each with its website, its country and whether it has been read. Free. Use it when a name is ambiguous or a paid tool said a company is not held, then pass the id of the right one to the other tools.
+parameters:
+- name: company
+  required: true
+  form: llm
+  label:
+    en_US: Company
+  type: string
+  human_description:
+    en_US: A company name, part of one, or a website address.
+  llm_description: A company name, part of one, or a website address.
+extra:
+  python:
+    source: tools/identify_company.py

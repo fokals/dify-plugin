@@ -1,0 +1,43 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: company_changes
+  author: fokals
+  label:
+    en_US: What changed at my companies
+description:
+  human:
+    en_US: 'What is new at the person''s own companies since a date: changes on each website (a technology added or dropped, a new market, language, currency, page or app, a price raised or cut, a plan or a free plan added or drop...'
+  llm: 'What is new at the person''s own companies since a date: changes on each website (a technology added or dropped, a new market, language, currency, page or app, a price raised or cut, a plan or a free plan added or dropped, a sales motion or customer size that moved, a title reworded) and the company''s announcements by type (funding, launches, partnerships, leadership changes, expansion). Each change comes in plain words. Use it for a weekly check on a list of accounts, or to find a timely reason to get in touch. A company with nothing new costs nothing and is named as such. At most 100 companies a call. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: companies
+  required: true
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. Separated by commas.
+  llm_description: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. Separated by commas.
+- name: since
+  required: false
+  form: llm
+  label:
+    en_US: Since
+  type: string
+  human_description:
+    en_US: What changed on or after this date, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+  llm_description: What changed on or after this date, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/company_changes.py

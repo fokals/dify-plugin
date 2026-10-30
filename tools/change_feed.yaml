@@ -1,0 +1,106 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: change_feed
+  author: fokals
+  label:
+    en_US: Website changes across companies
+description:
+  human:
+    en_US: 'Every change seen on company websites from a day on, oldest first, a page at a time, each in plain words: a technology added or dropped, a new market, language, currency, page or app, a price raised or cut, a plan or...'
+  llm: 'Every change seen on company websites from a day on, oldest first, a page at a time, each in plain words: a technology added or dropped, a new market, language, currency, page or app, a price raised or cut, a plan or free plan added or dropped, a change in how the company describes itself. Narrow it to one kind of change. Use it to catch every company that adopted or dropped a tool, or changed its prices, this week. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: since
+  required: false
+  form: llm
+  label:
+    en_US: Since
+  type: string
+  human_description:
+    en_US: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+  llm_description: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+- name: category
+  required: false
+  form: llm
+  label:
+    en_US: Category
+  type: select
+  options:
+  - value: technology
+    label:
+      en_US: technology
+  - value: technology_id
+    label:
+      en_US: technology_id
+  - value: market
+    label:
+      en_US: market
+  - value: language
+    label:
+      en_US: language
+  - value: currency
+    label:
+      en_US: currency
+  - value: social
+    label:
+      en_US: social
+  - value: app
+    label:
+      en_US: app
+  - value: page
+    label:
+      en_US: page
+  - value: promo
+    label:
+      en_US: promo
+  - value: dns
+    label:
+      en_US: dns
+  - value: platform
+    label:
+      en_US: platform
+  - value: pricing
+    label:
+      en_US: pricing
+  - value: label
+    label:
+      en_US: label
+  - value: identity
+    label:
+      en_US: identity
+  human_description:
+    en_US: 'Only changes of this kind: technology (a tool added or dropped), market, language, currency, social, app, page, promo, dns, platform, pricing (a price or plan changed), label (how the company describes itself), identity.'
+  llm_description: 'Only changes of this kind: technology (a tool added or dropped), market, language, currency, social, app, page, promo, dns, platform, pricing (a price or plan changed), label (how the company describes itself), identity.'
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: How many changes to return. 50 unless given, 100 at most.
+  llm_description: How many changes to return. 50 unless given, 100 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/change_feed.py

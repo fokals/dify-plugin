@@ -1,0 +1,54 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: intent_history
+  author: fokals
+  label:
+    en_US: Buying intent week by week
+description:
+  human:
+    en_US: 'The buying topics each of the person''s companies has shown signs of, week by week for up to 12 weeks: for each week, each topic with its score from 0 to 100, whether it was surging (rising sharply against the company''...'
+  llm: 'The buying topics each of the person''s companies has shown signs of, week by week for up to 12 weeks: for each week, each topic with its score from 0 to 100, whether it was surging (rising sharply against the company''s own recent weeks) and how many signals were behind it, with the company''s latest signals by date and kind. Give a topic to follow just that one. Use it to see whether interest is building or fading, to time an approach, or to explain a score. A company with no intent held costs nothing and is named as such. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: companies
+  required: true
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. At most 25 a call. Separated by commas.
+  llm_description: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. At most 25 a call. Separated by commas.
+- name: weeks
+  required: false
+  form: llm
+  label:
+    en_US: Weeks
+  type: number
+  min: 1
+  max: 12
+  human_description:
+    en_US: How many weeks to return, oldest first. 12 unless given.
+  llm_description: How many weeks to return, oldest first. 12 unless given.
+- name: topic
+  required: false
+  form: llm
+  label:
+    en_US: Topic
+  type: string
+  human_description:
+    en_US: 'One buying topic to follow, by name or id: "Marketing automation". list_filters with kind buying_topics has them all.'
+  llm_description: 'One buying topic to follow, by name or id: "Marketing automation". list_filters with kind buying_topics has them all.'
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/intent_history.py

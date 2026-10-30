@@ -1,0 +1,43 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: company_profile
+  author: fokals
+  label:
+    en_US: Company profile
+description:
+  human:
+    en_US: 'One company in depth: what it sells and to whom, every technology its website runs and since when, its open roles by function, seniority and country with the latest postings, the buying topics it shows signs of with t...'
+  llm: 'One company in depth: what it sells and to whom, every technology its website runs and since when, its open roles by function, seniority and country with the latest postings, the buying topics it shows signs of with the signals behind them, its latest announcements by type, the latest changes on its website, how its traffic ranks, its agent readiness score with the evidence behind it, the projects its job ads state, the back-office software they name that its website does not show, its weekly health with the reasons, and the technologies it is likeliest to add next. Use it to research an account before a call, to explain why a company is on a list, or to compare companies. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: company
+  required: true
+  form: llm
+  label:
+    en_US: Company
+  type: string
+  human_description:
+    en_US: The company, as a website address ("acme.com"), a name or an id from an earlier answer.
+  llm_description: The company, as a website address ("acme.com"), a name or an id from an earlier answer.
+- name: sections
+  required: false
+  form: llm
+  label:
+    en_US: Sections
+  type: string
+  human_description:
+    en_US: 'Which parts to return: technology, hiring, buying_topics, announcements, changes, traffic, agent_readiness, projects, internal_tools, health, likely_next. All of them unless given; ask for fewer to keep the answer short. Separated by commas.'
+  llm_description: 'Which parts to return: technology, hiring, buying_topics, announcements, changes, traffic, agent_readiness, projects, internal_tools, health, likely_next. All of them unless given; ask for fewer to keep the answer short. Separated by commas.'
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/company_profile.py

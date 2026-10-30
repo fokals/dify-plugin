@@ -1,0 +1,81 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: likely_next
+  author: fokals
+  label:
+    en_US: Likely next technologies
+description:
+  human:
+    en_US: What companies are likely to add next.
+  llm: 'What companies are likely to add next. Give the person''s own companies to get, for each, the technologies it is likeliest to add in the coming weeks, each with an estimated likelihood (0 to 1), with the support counts behind it: the changes behind it in plain words, how many companies made the same change and how many of them then added the technology. A likelihood is an estimate, never a certainty. Or give a technology to get the companies likeliest to add it next, likeliest first, a page at a time, with the changes that most often come before it. Use it to reach an account before it buys, or to build a list of the next buyers of a product. At most 100 companies a call. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: companies
+  required: false
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: 'The person''s own companies, each as a website address, a name or an id: the technologies each is likeliest to add next. Give these or a technology. Separated by commas.'
+  llm_description: 'The person''s own companies, each as a website address, a name or an id: the technologies each is likeliest to add next. Give these or a technology. Separated by commas.'
+- name: technology
+  required: false
+  form: llm
+  label:
+    en_US: Technology
+  type: string
+  human_description:
+    en_US: 'A technology, by name: "HubSpot". The companies likeliest to add it next. Give this or companies.'
+  llm_description: 'A technology, by name: "HubSpot". The companies likeliest to add it next. Give this or companies.'
+- name: country
+  required: false
+  form: llm
+  label:
+    en_US: Country
+  type: string
+  human_description:
+    en_US: 'With technology: only companies in this country. Matches the head office''s country where it is known, otherwise the main market the company''s website serves.'
+  llm_description: 'With technology: only companies in this country. Matches the head office''s country where it is known, otherwise the main market the company''s website serves.'
+- name: industry
+  required: false
+  form: llm
+  label:
+    en_US: Industry
+  type: string
+  human_description:
+    en_US: 'With technology: only companies of this industry. One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+  llm_description: 'With technology: only companies of this industry. One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: 'With technology: how many companies to return. 25 unless given.'
+  llm_description: 'With technology: how many companies to return. 25 unless given.'
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: 'With technology: next_cursor of the answer before, to carry on where it ended.'
+  llm_description: 'With technology: next_cursor of the answer before, to carry on where it ended.'
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/likely_next.py

@@ -1,0 +1,147 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: search_job_postings
+  author: fokals
+  label:
+    en_US: Search job postings
+description:
+  human:
+    en_US: 'Searches the open job postings of companies: by words in the title, function, seniority, country, remote or on site, a technology the posting asks for, the hiring company''s industry, pay, and how lately the posting ap...'
+  llm: 'Searches the open job postings of companies: by words in the title, function, seniority, country, remote or on site, a technology the posting asks for, the hiring company''s industry, pay, and how lately the posting appeared. The latest postings come first, each with its company, function, seniority, pay where stated, and link. Use it to find who is hiring for a role, to spot a team being built, or to check hiring at a list of accounts. Give at least one filter. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: title
+  required: false
+  form: llm
+  label:
+    en_US: Title
+  type: string
+  human_description:
+    en_US: 'Text the job title holds: "account executive", "data engineer".'
+  llm_description: 'Text the job title holds: "account executive", "data engineer".'
+- name: job_function
+  required: false
+  form: llm
+  label:
+    en_US: Job function
+  type: string
+  human_description:
+    en_US: 'One of: software_engineering, hardware_engineering, data_analytics, data_science_ml, product_management, design, marketing_brand, marketing_performance, marketing_content_social, sales, sales_development, customer_success_support, operations, supply_chain_logistics, manufacturing_production, finance_accounting, legal_compliance, people_hr, it_security, research_science, healthcare_clinical, retail_store, hospitality_food, education_training, executive_leadership, other.'
+  llm_description: 'One of: software_engineering, hardware_engineering, data_analytics, data_science_ml, product_management, design, marketing_brand, marketing_performance, marketing_content_social, sales, sales_development, customer_success_support, operations, supply_chain_logistics, manufacturing_production, finance_accounting, legal_compliance, people_hr, it_security, research_science, healthcare_clinical, retail_store, hospitality_food, education_training, executive_leadership, other.'
+- name: seniority
+  required: false
+  form: llm
+  label:
+    en_US: Seniority
+  type: string
+  human_description:
+    en_US: 'One of: intern, entry, mid, senior, lead_principal, manager, director, vp, c_level.'
+  llm_description: 'One of: intern, entry, mid, senior, lead_principal, manager, director, vp, c_level.'
+- name: country
+  required: false
+  form: llm
+  label:
+    en_US: Country
+  type: string
+  human_description:
+    en_US: 'Where the job is, as a two-letter country code: US, GB, DE.'
+  llm_description: 'Where the job is, as a two-letter country code: US, GB, DE.'
+- name: work_mode
+  required: false
+  form: llm
+  label:
+    en_US: Work mode
+  type: select
+  options:
+  - value: onsite
+    label:
+      en_US: onsite
+  - value: hybrid
+    label:
+      en_US: hybrid
+  - value: remote
+    label:
+      en_US: remote
+  human_description:
+    en_US: onsite, hybrid or remote.
+  llm_description: onsite, hybrid or remote.
+- name: technology
+  required: false
+  form: llm
+  label:
+    en_US: Technology
+  type: string
+  human_description:
+    en_US: 'A technology the posting asks for, by name: "Snowflake", "Salesforce".'
+  llm_description: 'A technology the posting asks for, by name: "Snowflake", "Salesforce".'
+- name: industry
+  required: false
+  form: llm
+  label:
+    en_US: Industry
+  type: string
+  human_description:
+    en_US: 'The hiring company''s industry. One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+  llm_description: 'The hiring company''s industry. One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+- name: seen_since
+  required: false
+  form: llm
+  label:
+    en_US: Seen since
+  type: string
+  human_description:
+    en_US: Only postings first seen on or after this date, YYYY-MM-DD.
+  llm_description: Only postings first seen on or after this date, YYYY-MM-DD.
+- name: min_salary_usd
+  required: false
+  form: llm
+  label:
+    en_US: Min salary usd
+  type: number
+  min: 1
+  max: 10000000
+  human_description:
+    en_US: Only postings that state pay of at least this much a year, in US dollars.
+  llm_description: Only postings that state pay of at least this much a year, in US dollars.
+- name: companies
+  required: false
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: Search only at these companies (the person's own list), each as a website address, a name or an id. Separated by commas.
+  llm_description: Search only at these companies (the person's own list), each as a website address, a name or an id. Separated by commas.
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 50
+  human_description:
+    en_US: How many postings to return. 20 unless given, 50 at most.
+  llm_description: How many postings to return. 20 unless given, 50 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/search_job_postings.py

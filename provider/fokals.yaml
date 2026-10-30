@@ -1,0 +1,54 @@
+identity:
+  author: fokals
+  name: fokals
+  label:
+    en_US: Fokals
+  description:
+    en_US: Fokals company intelligence to find, enrich and profile companies by technology, hiring, funding, buying intent and company health.
+  icon: icon.png
+  tags:
+  - business
+  - search
+credentials_for_provider:
+  fokals_api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: Fokals key
+    placeholder:
+      en_US: Your Fokals key
+    help:
+      en_US: Make a key on your Fokals account page.
+    url: https://www.fokals.com/account
+tools:
+- tools/find_companies.yaml
+- tools/count_companies.yaml
+- tools/enrich_companies.yaml
+- tools/company_profile.yaml
+- tools/company_changes.yaml
+- tools/search_job_postings.yaml
+- tools/similar_companies.yaml
+- tools/company_connections.yaml
+- tools/identify_company.yaml
+- tools/market_breakdown.yaml
+- tools/vendor_scorecard.yaml
+- tools/companies_like_customers.yaml
+- tools/company_health.yaml
+- tools/likely_next.yaml
+- tools/intent_history.yaml
+- tools/sales_team.yaml
+- tools/funding_filings.yaml
+- tools/headcount_history.yaml
+- tools/traffic_history.yaml
+- tools/signal_feed.yaml
+- tools/announcement_feed.yaml
+- tools/change_feed.yaml
+- tools/listed_securities.yaml
+- tools/market_trends.yaml
+- tools/market_movers.yaml
+- tools/sales_pay_benchmarks.yaml
+- tools/list_filters.yaml
+- tools/account_balance.yaml
+extra:
+  python:
+    source: provider/fokals.py

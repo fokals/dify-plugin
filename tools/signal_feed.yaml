@@ -1,0 +1,88 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: signal_feed
+  author: fokals
+  label:
+    en_US: Buying signals across companies
+description:
+  human:
+    en_US: 'Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signa...'
+  llm: 'Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signal it is and the buying topics it points to. Narrow it to one buying topic or one kind of source. Use it to watch a topic for new interest as it appears, or to build a list from fresh signals. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: since
+  required: false
+  form: llm
+  label:
+    en_US: Since
+  type: string
+  human_description:
+    en_US: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+  llm_description: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+- name: topic
+  required: false
+  form: llm
+  label:
+    en_US: Topic
+  type: string
+  human_description:
+    en_US: 'Only signals of this buying topic, by name or id: "Marketing automation".'
+  llm_description: 'Only signals of this buying topic, by name or id: "Marketing automation".'
+- name: source
+  required: false
+  form: llm
+  label:
+    en_US: Source
+  type: select
+  options:
+  - value: site
+    label:
+      en_US: site
+  - value: dns
+    label:
+      en_US: dns
+  - value: careers
+    label:
+      en_US: careers
+  - value: filing
+    label:
+      en_US: filing
+  - value: news
+    label:
+      en_US: news
+  human_description:
+    en_US: 'Only signals of this kind: site (the website), dns (the domain records), careers (job ads), filing (regulatory filings), news (announcements).'
+  llm_description: 'Only signals of this kind: site (the website), dns (the domain records), careers (job ads), filing (regulatory filings), news (announcements).'
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: How many signals to return. 50 unless given, 100 at most.
+  llm_description: How many signals to return. 50 unless given, 100 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/signal_feed.py

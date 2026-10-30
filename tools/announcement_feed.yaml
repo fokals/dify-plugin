@@ -1,0 +1,100 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: announcement_feed
+  author: fokals
+  label:
+    en_US: Announcements across companies
+description:
+  human:
+    en_US: 'Every announcement companies made about themselves from a day on, newest first, a page at a time: the day, the company, the title, its types (funding, a launch, a partnership, an acquisition, a leadership change, an e...'
+  llm: 'Every announcement companies made about themselves from a day on, newest first, a page at a time: the day, the company, the title, its types (funding, a launch, a partnership, an acquisition, a leadership change, an expansion and more), what a funding announcement states of the round, the leadership roles named, and a link. Narrow it to one type. Use it to catch every funding round or leadership change in a week. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: since
+  required: false
+  form: llm
+  label:
+    en_US: Since
+  type: string
+  human_description:
+    en_US: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+  llm_description: From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.
+- name: type
+  required: false
+  form: llm
+  label:
+    en_US: Type
+  type: select
+  options:
+  - value: product_launch
+    label:
+      en_US: product_launch
+  - value: partnership
+    label:
+      en_US: partnership
+  - value: acquisition_made
+    label:
+      en_US: acquisition_made
+  - value: acquired_or_merged
+    label:
+      en_US: acquired_or_merged
+  - value: funding_round
+    label:
+      en_US: funding_round
+  - value: leadership_change
+    label:
+      en_US: leadership_change
+  - value: layoffs_restructuring
+    label:
+      en_US: layoffs_restructuring
+  - value: expansion
+    label:
+      en_US: expansion
+  - value: incident
+    label:
+      en_US: incident
+  - value: financial_results
+    label:
+      en_US: financial_results
+  - value: award_or_recognition
+    label:
+      en_US: award_or_recognition
+  - value: regulatory_or_legal
+    label:
+      en_US: regulatory_or_legal
+  human_description:
+    en_US: Only announcements of this type. list_filters with kind announcement_types has them all.
+  llm_description: Only announcements of this type. list_filters with kind announcement_types has them all.
+- name: limit
+  required: false
+  form: llm
+  label:
+    en_US: Limit
+  type: number
+  min: 1
+  max: 100
+  human_description:
+    en_US: How many announcements to return. 50 unless given, 100 at most.
+  llm_description: How many announcements to return. 50 unless given, 100 at most.
+- name: cursor
+  required: false
+  form: llm
+  label:
+    en_US: Cursor
+  type: string
+  human_description:
+    en_US: next_cursor of the answer before, to carry on where it ended.
+  llm_description: next_cursor of the answer before, to carry on where it ended.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/announcement_feed.py

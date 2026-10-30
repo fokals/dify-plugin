@@ -1,0 +1,54 @@
+name: package
+
+# Tests the plugin, packages it with Dify's own tool, and runs the Marketplace validator on the
+# package, as the dify-plugins review does. The package and the report are kept as artifacts.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Mondays: is the plugin still written from the API as it is today?
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  DIFY_CLI: "0.6.12"
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fokals
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r fokals/requirements.txt pytest pyyaml
+      - run: python -m pytest fokals/tests -q
+        env:
+          PYTHONPATH: fokals
+      - name: The tools still match the API
+        run: |
+          cd fokals && python scripts/generate.py && git diff --exit-code tools provider
+      - name: Package with Dify's tool
+        run: |
+          curl -sSL -o dify "https://github.com/langgenius/dify-plugin-daemon/releases/download/${DIFY_CLI}/dify-plugin-linux-amd64"
+          chmod +x dify
+          version=$(grep -m1 '^version:' fokals/manifest.yaml | awk '{print $2}')
+          ./dify plugin package ./fokals -o "fokals-${version}.difypkg"
+          ls -la *.difypkg
+      - name: Validate as the Marketplace does
+        run: |
+          git clone -q --depth 1 https://github.com/langgenius/dify-marketplace-toolkit.git toolkit
+          pip install -r toolkit/requirements.txt 2>/dev/null || true
+          python3 toolkit/validator/validate-difypkg.py fokals-*.difypkg --output-dir validation-report
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fokals-difypkg
+          path: |
+            *.difypkg
+            validation-report/

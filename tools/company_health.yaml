@@ -1,0 +1,45 @@
+# Written by scripts/generate.py from the Fokals OpenAPI document.
+identity:
+  name: company_health
+  author: fokals
+  label:
+    en_US: Company health
+description:
+  human:
+    en_US: 'A weekly health reading for each of the person''s companies: a band in words (signs of distress, worth watching, steady, growing, breaking out), a distress score and a breakout score from 0 to 100, the reasons in plain...'
+  llm: 'A weekly health reading for each of the person''s companies: a band in words (signs of distress, worth watching, steady, growing, breaking out), a distress score and a breakout score from 0 to 100, the reasons in plain words, the shifts in positioning it shows (moving upmarket or downmarket, turning to AI, selling to a new buyer, prices going up or down), and the scores week by week. Use it to spot accounts at risk or taking off, and to time an approach. A company with no health reading costs nothing and is named as such. At most 100 companies a call. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+parameters:
+- name: companies
+  required: true
+  form: llm
+  label:
+    en_US: Companies
+  type: string
+  human_description:
+    en_US: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. Separated by commas.
+  llm_description: The person's own companies, each as a website address ("acme.com"), a name or an id from an earlier answer. Separated by commas.
+- name: weeks
+  required: false
+  form: llm
+  label:
+    en_US: Weeks
+  type: number
+  min: 1
+  max: 13
+  human_description:
+    en_US: How many weeks of scores to return, oldest first. 13 unless given.
+  llm_description: How many weeks of scores to return, oldest first. 13 unless given.
+- name: max_usd
+  required: false
+  form: llm
+  label:
+    en_US: Max usd
+  type: number
+  min: 0
+  max: 100000
+  human_description:
+    en_US: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+  llm_description: The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.
+extra:
+  python:
+    source: tools/company_health.py
