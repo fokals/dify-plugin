@@ -5,7 +5,7 @@ name: fokals
 label:
   en_US: Fokals
 description:
-  en_US: Fokals company intelligence to find, enrich and profile companies by technology, hiring, funding, buying intent and company health.
+  en_US: "Fokals Market & Company Intelligence: what companies will likely adopt next, company health, buying signals and market feeds, from technology, hiring and funding data."
 icon: icon.png
 created_at: '2026-10-30T00:00:00Z'
 resource:
