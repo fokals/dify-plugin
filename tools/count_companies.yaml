@@ -437,8 +437,8 @@ parameters:
     label:
       en_US: free
   human_description:
-    en_US: 'How the company charges, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
-  llm_description: 'How the company charges, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
+    en_US: 'How the company bills, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
+  llm_description: 'How the company bills, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
 - name: website_shows
   required: false
   form: llm
