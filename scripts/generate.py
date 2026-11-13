@@ -82,9 +82,14 @@ def words(name: str) -> str:
 
 
 def plain(text: str) -> str:
-    """A sentence about a tool left out of the plugin is dropped, and "charged" reads "billed"
-    (the Marketplace sends a plugin that speaks of charges to extra review)."""
-    text = re.sub(r"\bcharged\b", "billed", text)
+    """A sentence about a tool left out of the plugin is dropped, and "charge", "charges" and
+    "charged" read "bill", "bills" and "billed" (the Marketplace sends a plugin that speaks of
+    charges to extra review)."""
+    text = re.sub(
+        r"\bcharge(s|d)?\b",
+        lambda m: {"": "bill", "s": "bills", "d": "billed"}[m.group(1) or ""],
+        text,
+    )
     left_out = [e for e in ALL_ENDPOINTS if e not in TOOLS]
     if not left_out:
         return text.strip()

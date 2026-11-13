@@ -1,5 +1,7 @@
 # Fokals
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fokals/dify-plugin/badge)](https://scorecard.dev/viewer/?uri=github.com/fokals/dify-plugin)
+
 **Author:** Fokals
 **Version:** 0.0.1
 **Type:** tool

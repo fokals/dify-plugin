@@ -8,7 +8,7 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 from tools import fokals_api
 
-READINGS = {"limit": "whole"}
+READINGS = {"limit": "whole", "min_companies": "whole"}
 
 
 class ListFiltersTool(Tool):

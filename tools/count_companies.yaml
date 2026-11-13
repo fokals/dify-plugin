@@ -34,8 +34,17 @@ parameters:
     en_US: Hiring
   type: boolean
   human_description:
-    en_US: true keeps only companies with open roles now.
-  llm_description: true keeps only companies with open roles now.
+    en_US: 'true keeps only companies hiring now: a new role first seen in the last 30 days.'
+  llm_description: 'true keeps only companies hiring now: a new role first seen in the last 30 days.'
+- name: not_hiring
+  required: false
+  form: llm
+  label:
+    en_US: Not hiring
+  type: boolean
+  human_description:
+    en_US: 'true keeps only companies not hiring now: no new role in the last 30 days.'
+  llm_description: 'true keeps only companies not hiring now: no new role in the last 30 days.'
 - name: industry
   required: false
   form: llm
@@ -72,6 +81,15 @@ parameters:
   human_description:
     en_US: true keeps only companies with a stock exchange listing, their own or a parent's.
   llm_description: true keeps only companies with a stock exchange listing, their own or a parent's.
+- name: not_listed
+  required: false
+  form: llm
+  label:
+    en_US: Not listed
+  type: boolean
+  human_description:
+    en_US: 'true keeps only private companies: no listing of their own or a parent''s.'
+  llm_description: 'true keeps only private companies: no listing of their own or a parent''s.'
 - name: changed_since
   required: false
   form: llm
@@ -302,6 +320,756 @@ parameters:
   human_description:
     en_US: 'A shift in positioning the company shows in the latest week: upmarket, downmarket, ai_pivot (turning to AI), new_buyer (selling to a new buyer), price_up or price_down.'
   llm_description: 'A shift in positioning the company shows in the latest week: upmarket, downmarket, ai_pivot (turning to AI), new_buyer (selling to a new buyer), price_up or price_down.'
+- name: sales_motion
+  required: false
+  form: llm
+  label:
+    en_US: Sales motion
+  type: select
+  options:
+  - value: self_serve
+    label:
+      en_US: self_serve
+  - value: sales_led
+    label:
+      en_US: sales_led
+  - value: both
+    label:
+      en_US: both
+  - value: offline
+    label:
+      en_US: offline
+  human_description:
+    en_US: 'How the company sells, from its website. One of: self_serve (Self-serve: buy or sign up online), sales_led (Sales-led: talk to sales), both (Both self-serve and sales-led), offline (Offline: in person or by phone).'
+  llm_description: 'How the company sells, from its website. One of: self_serve (Self-serve: buy or sign up online), sales_led (Sales-led: talk to sales), both (Both self-serve and sales-led), offline (Offline: in person or by phone).'
+- name: customer_size
+  required: false
+  form: llm
+  label:
+    en_US: Customer size
+  type: select
+  options:
+  - value: consumers
+    label:
+      en_US: consumers
+  - value: smb
+    label:
+      en_US: smb
+  - value: mid_market
+    label:
+      en_US: mid_market
+  - value: enterprise
+    label:
+      en_US: enterprise
+  - value: mixed
+    label:
+      en_US: mixed
+  human_description:
+    en_US: 'Who the company sells to, by size, from its website. One of: consumers (Consumers), smb (Small businesses), mid_market (Mid-market companies), enterprise (Enterprises), mixed (A mix of customers).'
+  llm_description: 'Who the company sells to, by size, from its website. One of: consumers (Consumers), smb (Small businesses), mid_market (Mid-market companies), enterprise (Enterprises), mixed (A mix of customers).'
+- name: growth_stage
+  required: false
+  form: llm
+  label:
+    en_US: Growth stage
+  type: select
+  options:
+  - value: startup
+    label:
+      en_US: startup
+  - value: scaleup
+    label:
+      en_US: scaleup
+  - value: established
+    label:
+      en_US: established
+  - value: incumbent
+    label:
+      en_US: incumbent
+  human_description:
+    en_US: 'How far along the company is, from its website. One of: startup (Startup), scaleup (Scale-up), established (Established), incumbent (Incumbent).'
+  llm_description: 'How far along the company is, from its website. One of: startup (Startup), scaleup (Scale-up), established (Established), incumbent (Incumbent).'
+- name: price_tier
+  required: false
+  form: llm
+  label:
+    en_US: Price tier
+  type: select
+  options:
+  - value: budget
+    label:
+      en_US: budget
+  - value: mid_market
+    label:
+      en_US: mid_market
+  - value: premium
+    label:
+      en_US: premium
+  - value: luxury
+    label:
+      en_US: luxury
+  human_description:
+    en_US: 'Where the company''s prices sit against its market, from its website. One of: budget (Budget), mid_market (Mid-priced), premium (Premium), luxury (Luxury).'
+  llm_description: 'Where the company''s prices sit against its market, from its website. One of: budget (Budget), mid_market (Mid-priced), premium (Premium), luxury (Luxury).'
+- name: pricing_model
+  required: false
+  form: llm
+  label:
+    en_US: Pricing model
+  type: select
+  options:
+  - value: subscription
+    label:
+      en_US: subscription
+  - value: usage_based
+    label:
+      en_US: usage_based
+  - value: one_time
+    label:
+      en_US: one_time
+  - value: quote_only
+    label:
+      en_US: quote_only
+  - value: freemium
+    label:
+      en_US: freemium
+  - value: free
+    label:
+      en_US: free
+  human_description:
+    en_US: 'How the company bills, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
+  llm_description: 'How the company bills, from its website. One of: subscription (Subscription), usage_based (Usage-based), one_time (One-time purchase), quote_only (Price on request), freemium (Freemium), free (Free).'
+- name: website_shows
+  required: false
+  form: llm
+  label:
+    en_US: Website shows
+  type: select
+  options:
+  - value: sells_online
+    label:
+      en_US: sells_online
+  - value: physical_locations
+    label:
+      en_US: physical_locations
+  - value: international
+    label:
+      en_US: international
+  - value: sustainability
+    label:
+      en_US: sustainability
+  - value: subscription
+    label:
+      en_US: subscription
+  - value: ai_product
+    label:
+      en_US: ai_product
+  - value: enterprise_focus
+    label:
+      en_US: enterprise_focus
+  human_description:
+    en_US: 'Something the company''s website shows. One of: sells_online (Sells online), physical_locations (Has physical locations), international (Operates internationally), sustainability (Talks about sustainability), subscription (Offers a subscription), ai_product (Sells an AI product), enterprise_focus (Focused on enterprises).'
+  llm_description: 'Something the company''s website shows. One of: sells_online (Sells online), physical_locations (Has physical locations), international (Operates internationally), sustainability (Talks about sustainability), subscription (Offers a subscription), ai_product (Sells an AI product), enterprise_focus (Focused on enterprises).'
+- name: headcount
+  required: false
+  form: llm
+  label:
+    en_US: Headcount
+  type: select
+  options:
+  - value: '1_10'
+    label:
+      en_US: '1_10'
+  - value: '11_50'
+    label:
+      en_US: '11_50'
+  - value: '51_200'
+    label:
+      en_US: '51_200'
+  - value: '201_1000'
+    label:
+      en_US: '201_1000'
+  - value: '1001_5000'
+    label:
+      en_US: '1001_5000'
+  - value: 5001_plus
+    label:
+      en_US: 5001_plus
+  human_description:
+    en_US: 'The company''s stated head count, as a band. One of: 1_10 (1 to 10 people), 11_50 (11 to 50 people), 51_200 (51 to 200 people), 201_1000 (201 to 1,000 people), 1001_5000 (1,001 to 5,000 people), 5001_plus (More than 5,000 people). Known for a small share of companies, mostly listed ones.'
+  llm_description: 'The company''s stated head count, as a band. One of: 1_10 (1 to 10 people), 11_50 (11 to 50 people), 51_200 (51 to 200 people), 201_1000 (201 to 1,000 people), 1001_5000 (1,001 to 5,000 people), 5001_plus (More than 5,000 people). Known for a small share of companies, mostly listed ones.'
+- name: founded
+  required: false
+  form: llm
+  label:
+    en_US: Founded
+  type: select
+  options:
+  - value: before_1950
+    label:
+      en_US: before_1950
+  - value: '1950_1999'
+    label:
+      en_US: '1950_1999'
+  - value: '2000_2009'
+    label:
+      en_US: '2000_2009'
+  - value: '2010_2019'
+    label:
+      en_US: '2010_2019'
+  - value: 2020_on
+    label:
+      en_US: 2020_on
+  human_description:
+    en_US: 'When the company was founded. One of: before_1950 (Before 1950), 1950_1999 (1950 to 1999), 2000_2009 (2000 to 2009), 2010_2019 (2010 to 2019), 2020_on (2020 or later). Known for a small share of companies.'
+  llm_description: 'When the company was founded. One of: before_1950 (Before 1950), 1950_1999 (1950 to 1999), 2000_2009 (2000 to 2009), 2010_2019 (2010 to 2019), 2020_on (2020 or later). Known for a small share of companies.'
+- name: likely_next
+  required: false
+  form: llm
+  label:
+    en_US: Likely next
+  type: string
+  human_description:
+    en_US: A technology the company is predicted to adopt next in the latest week, by name ("HubSpot"); "any" for any technology, "none" for no prediction. list_filters with kind likely_next has the technologies predicted.
+  llm_description: A technology the company is predicted to adopt next in the latest week, by name ("HubSpot"); "any" for any technology, "none" for no prediction. list_filters with kind likely_next has the technologies predicted.
+- name: technology_change
+  required: false
+  form: llm
+  label:
+    en_US: Technology change
+  type: select
+  options:
+  - value: added30
+    label:
+      en_US: added30
+  - value: added90
+    label:
+      en_US: added90
+  - value: dropped30
+    label:
+      en_US: dropped30
+  - value: dropped90
+    label:
+      en_US: dropped90
+  human_description:
+    en_US: 'With technology: the company added it to its website, or dropped it, in the window. One of: added30 (Added in the last 30 days), added90 (Added in the last 90 days), dropped30 (Dropped in the last 30 days), dropped90 (Dropped in the last 90 days). With a "dropped" value the company no longer runs it.'
+  llm_description: 'With technology: the company added it to its website, or dropped it, in the window. One of: added30 (Added in the last 30 days), added90 (Added in the last 90 days), dropped30 (Dropped in the last 30 days), dropped90 (Dropped in the last 90 days). With a "dropped" value the company no longer runs it.'
+- name: announced_within_days
+  required: false
+  form: llm
+  label:
+    en_US: Announced within days
+  type: number
+  min: 1
+  max: 365
+  human_description:
+    en_US: 'With announcement: made in the last this many days. Give this or announced_since, not both.'
+  llm_description: 'With announcement: made in the last this many days. Give this or announced_since, not both.'
+- name: raised_capital
+  required: false
+  form: llm
+  label:
+    en_US: Raised capital
+  type: select
+  options:
+  - value: 6m
+    label:
+      en_US: 6m
+  - value: 12m
+    label:
+      en_US: 12m
+  human_description:
+    en_US: 'The company filed a private capital raise with the regulator in the window. One of: 6m (In the last 6 months), 12m (In the last 12 months).'
+  llm_description: 'The company filed a private capital raise with the regulator in the window. One of: 6m (In the last 6 months), 12m (In the last 12 months).'
+- name: pricing_page_changed
+  required: false
+  form: llm
+  label:
+    en_US: Pricing page changed
+  type: boolean
+  human_description:
+    en_US: 'true keeps only companies whose pricing page changed in the last 90 days: plans, prices or how they are billed. price_change asks for one kind of change.'
+  llm_description: 'true keeps only companies whose pricing page changed in the last 90 days: plans, prices or how they are billed. price_change asks for one kind of change.'
+- name: changed_within_days
+  required: false
+  form: llm
+  label:
+    en_US: Changed within days
+  type: number
+  min: 1
+  max: 365
+  human_description:
+    en_US: Keeps only companies whose website changed in the last this many days. Give this or changed_since, not both.
+  llm_description: Keeps only companies whose website changed in the last this many days. Give this or changed_since, not both.
+- name: website_traffic
+  required: false
+  form: llm
+  label:
+    en_US: Website traffic
+  type: select
+  options:
+  - value: '10000'
+    label:
+      en_US: '10000'
+  - value: '100000'
+    label:
+      en_US: '100000'
+  - value: '1000000'
+    label:
+      en_US: '1000000'
+  - value: '10000000'
+    label:
+      en_US: '10000000'
+  human_description:
+    en_US: 'The company''s website is among the most visited websites in the world in the latest month held, as a string. One of: 10000 (Top 10,000 websites), 100000 (Top 100,000 websites), 1000000 (Top 1 million websites), 10000000 (Top 10 million websites).'
+  llm_description: 'The company''s website is among the most visited websites in the world in the latest month held, as a string. One of: 10000 (Top 10,000 websites), 100000 (Top 100,000 websites), 1000000 (Top 1 million websites), 10000000 (Top 10 million websites).'
+- name: hiring_for
+  required: false
+  form: llm
+  label:
+    en_US: Hiring for
+  type: select
+  options:
+  - value: software_engineering
+    label:
+      en_US: software_engineering
+  - value: hardware_engineering
+    label:
+      en_US: hardware_engineering
+  - value: data_analytics
+    label:
+      en_US: data_analytics
+  - value: data_science_ml
+    label:
+      en_US: data_science_ml
+  - value: product_management
+    label:
+      en_US: product_management
+  - value: design
+    label:
+      en_US: design
+  - value: marketing_brand
+    label:
+      en_US: marketing_brand
+  - value: marketing_performance
+    label:
+      en_US: marketing_performance
+  - value: marketing_content_social
+    label:
+      en_US: marketing_content_social
+  - value: sales
+    label:
+      en_US: sales
+  - value: sales_development
+    label:
+      en_US: sales_development
+  - value: customer_success_support
+    label:
+      en_US: customer_success_support
+  - value: operations
+    label:
+      en_US: operations
+  - value: supply_chain_logistics
+    label:
+      en_US: supply_chain_logistics
+  - value: manufacturing_production
+    label:
+      en_US: manufacturing_production
+  - value: finance_accounting
+    label:
+      en_US: finance_accounting
+  - value: legal_compliance
+    label:
+      en_US: legal_compliance
+  - value: people_hr
+    label:
+      en_US: people_hr
+  - value: it_security
+    label:
+      en_US: it_security
+  - value: research_science
+    label:
+      en_US: research_science
+  - value: healthcare_clinical
+    label:
+      en_US: healthcare_clinical
+  - value: retail_store
+    label:
+      en_US: retail_store
+  - value: hospitality_food
+    label:
+      en_US: hospitality_food
+  - value: education_training
+    label:
+      en_US: education_training
+  - value: executive_leadership
+    label:
+      en_US: executive_leadership
+  human_description:
+    en_US: 'At least one open role of this kind of work today. One of: software_engineering (Software engineering), hardware_engineering (Hardware engineering), data_analytics (Data and analytics), data_science_ml (Data science and AI), product_management (Product management), design (Design), marketing_brand (Brand marketing), marketing_performance (Performance marketing), marketing_content_social (Content and social), sales (Sales), sales_development (Sales development), customer_success_support (Customer success and support), operations (Operations), supply_chain_logistics (Supply chain and logistics), manufacturing_production (Production), finance_accounting (Finance and accounting), legal_compliance (Legal and compliance), people_hr (People and HR), it_security (IT and security), research_science (Research and science), healthcare_clinical (Clinical care), retail_store (Retail stores), hospitality_food (Hospitality and food), education_training (Education and training), executive_leadership
+      (Leadership).'
+  llm_description: 'At least one open role of this kind of work today. One of: software_engineering (Software engineering), hardware_engineering (Hardware engineering), data_analytics (Data and analytics), data_science_ml (Data science and AI), product_management (Product management), design (Design), marketing_brand (Brand marketing), marketing_performance (Performance marketing), marketing_content_social (Content and social), sales (Sales), sales_development (Sales development), customer_success_support (Customer success and support), operations (Operations), supply_chain_logistics (Supply chain and logistics), manufacturing_production (Production), finance_accounting (Finance and accounting), legal_compliance (Legal and compliance), people_hr (People and HR), it_security (IT and security), research_science (Research and science), healthcare_clinical (Clinical care), retail_store (Retail stores), hospitality_food (Hospitality and food), education_training (Education and training), executive_leadership
+    (Leadership).'
+- name: hiring_level
+  required: false
+  form: llm
+  label:
+    en_US: Hiring level
+  type: select
+  options:
+  - value: intern
+    label:
+      en_US: intern
+  - value: entry
+    label:
+      en_US: entry
+  - value: mid
+    label:
+      en_US: mid
+  - value: senior
+    label:
+      en_US: senior
+  - value: lead_principal
+    label:
+      en_US: lead_principal
+  - value: manager
+    label:
+      en_US: manager
+  - value: director
+    label:
+      en_US: director
+  - value: vp
+    label:
+      en_US: vp
+  - value: c_level
+    label:
+      en_US: c_level
+  human_description:
+    en_US: 'At least one open role at this level today. One of: intern (Internships), entry (Entry level), mid (Mid level), senior (Senior), lead_principal (Lead and principal), manager (Managers), director (Directors), vp (Vice presidents), c_level (Chief officers).'
+  llm_description: 'At least one open role at this level today. One of: intern (Internships), entry (Entry level), mid (Mid level), senior (Senior), lead_principal (Lead and principal), manager (Managers), director (Directors), vp (Vice presidents), c_level (Chief officers).'
+- name: registered_with
+  required: false
+  form: llm
+  label:
+    en_US: Registered with
+  type: select
+  options:
+  - value: any
+    label:
+      en_US: any
+  - value: lei
+    label:
+      en_US: lei
+  - value: sec
+    label:
+      en_US: sec
+  - value: uk_register
+    label:
+      en_US: uk_register
+  - value: uk_number
+    label:
+      en_US: uk_number
+  human_description:
+    en_US: 'A registry holds a record of the company. One of: any (In any registry), lei (Holds an LEI), sec (Files with the US securities regulator), uk_register (On the UK company register), uk_number (Has a UK company number). uk_number counts a UK company number whether the UK register confirmed it, the LEI record gives it or the company''s own website states it.'
+  llm_description: 'A registry holds a record of the company. One of: any (In any registry), lei (Holds an LEI), sec (Files with the US securities regulator), uk_register (On the UK company register), uk_number (Has a UK company number). uk_number counts a UK company number whether the UK register confirmed it, the LEI record gives it or the company''s own website states it.'
+- name: registry_status
+  required: false
+  form: llm
+  label:
+    en_US: Registry status
+  type: select
+  options:
+  - value: active
+    label:
+      en_US: active
+  - value: inactive
+    label:
+      en_US: inactive
+  - value: dissolved
+    label:
+      en_US: dissolved
+  - value: insolvency
+    label:
+      en_US: insolvency
+  human_description:
+    en_US: 'The company''s status as its registry gives it. One of: active (Active), inactive (Inactive), dissolved (Dissolved), insolvency (In liquidation or administration). Companies no registry holds are left out.'
+  llm_description: 'The company''s status as its registry gives it. One of: active (Active), inactive (Inactive), dissolved (Dissolved), insolvency (In liquidation or administration). Companies no registry holds are left out.'
+- name: incorporated
+  required: false
+  form: llm
+  label:
+    en_US: Incorporated
+  type: select
+  options:
+  - value: under_2y
+    label:
+      en_US: under_2y
+  - value: 2_5y
+    label:
+      en_US: 2_5y
+  - value: 5_10y
+    label:
+      en_US: 5_10y
+  - value: 10_25y
+    label:
+      en_US: 10_25y
+  - value: 25y_plus
+    label:
+      en_US: 25y_plus
+  human_description:
+    en_US: 'When the company was incorporated, as its registry records it. One of: under_2y (Less than 2 years ago), 2_5y (2 to 5 years ago), 5_10y (5 to 10 years ago), 10_25y (10 to 25 years ago), 25y_plus (More than 25 years ago). Known only for companies a registry holds.'
+  llm_description: 'When the company was incorporated, as its registry records it. One of: under_2y (Less than 2 years ago), 2_5y (2 to 5 years ago), 5_10y (5 to 10 years ago), 10_25y (10 to 25 years ago), 25y_plus (More than 25 years ago). Known only for companies a registry holds.'
+- name: linked_from_min
+  required: false
+  form: llm
+  label:
+    en_US: Linked from min
+  type: select
+  options:
+  - value: '5'
+    label:
+      en_US: '5'
+  - value: '25'
+    label:
+      en_US: '25'
+  - value: '100'
+    label:
+      en_US: '100'
+  - value: '500'
+    label:
+      en_US: '500'
+  human_description:
+    en_US: 'The company''s website is linked from the websites of at least this many other companies, as a string. One of: 5 (At least 5 company websites), 25 (At least 25 company websites), 100 (At least 100 company websites), 500 (At least 500 company websites).'
+  llm_description: 'The company''s website is linked from the websites of at least this many other companies, as a string. One of: 5 (At least 5 company websites), 25 (At least 25 company websites), 100 (At least 100 company websites), 500 (At least 500 company websites).'
+- name: link_rank_min
+  required: false
+  form: llm
+  label:
+    en_US: Link rank min
+  type: select
+  options:
+  - value: '75'
+    label:
+      en_US: '75'
+  - value: '90'
+    label:
+      en_US: '90'
+  - value: '99'
+    label:
+      en_US: '99'
+  human_description:
+    en_US: 'The company ranks at least this high, as a string, among companies linked from at least one other company''s website (the share linked from fewer, 0 to 100). One of: 75 (Top quarter), 90 (Top 10%), 99 (Top 1%).'
+  llm_description: 'The company ranks at least this high, as a string, among companies linked from at least one other company''s website (the share linked from fewer, 0 to 100). One of: 75 (Top quarter), 90 (Top 10%), 99 (Top 1%).'
+- name: gaining_links
+  required: false
+  form: llm
+  label:
+    en_US: Gaining links
+  type: boolean
+  human_description:
+    en_US: true keeps only companies whose website more other companies' websites began to link to than stopped, over the last 90 days.
+  llm_description: true keeps only companies whose website more other companies' websites began to link to than stopped, over the last 90 days.
+- name: group
+  required: false
+  form: llm
+  label:
+    en_US: Group
+  type: select
+  options:
+  - value: has_parent
+    label:
+      en_US: has_parent
+  - value: has_subsidiaries
+    label:
+      en_US: has_subsidiaries
+  - value: any
+    label:
+      en_US: any
+  human_description:
+    en_US: 'The company''s place in a group of companies, from the legal entity register''s ownership records, the subsidiary lists listed companies file with their annual reports and the ownership of brands. One of: has_parent (Has a parent company), has_subsidiaries (Has subsidiaries), any (Either: a parent or subsidiaries).'
+  llm_description: 'The company''s place in a group of companies, from the legal entity register''s ownership records, the subsidiary lists listed companies file with their annual reports and the ownership of brands. One of: has_parent (Has a parent company), has_subsidiaries (Has subsidiaries), any (Either: a parent or subsidiaries).'
+- name: subsidiaries
+  required: false
+  form: llm
+  label:
+    en_US: Subsidiaries
+  type: select
+  options:
+  - value: '1_9'
+    label:
+      en_US: '1_9'
+  - value: '10_49'
+    label:
+      en_US: '10_49'
+  - value: '50_199'
+    label:
+      en_US: '50_199'
+  - value: 200_plus
+    label:
+      en_US: 200_plus
+  human_description:
+    en_US: 'How many subsidiaries the company has, as a band of the largest count held (its latest annual report''s list, the legal entity register, the subsidiaries held as companies, its brands among them). One of: 1_9 (1 to 9 subsidiaries), 10_49 (10 to 49 subsidiaries), 50_199 (50 to 199 subsidiaries), 200_plus (200 or more subsidiaries).'
+  llm_description: 'How many subsidiaries the company has, as a band of the largest count held (its latest annual report''s list, the legal entity register, the subsidiaries held as companies, its brands among them). One of: 1_9 (1 to 9 subsidiaries), 10_49 (10 to 49 subsidiaries), 50_199 (50 to 199 subsidiaries), 200_plus (200 or more subsidiaries).'
+- name: store_size
+  required: false
+  form: llm
+  label:
+    en_US: Store size
+  type: select
+  options:
+  - value: '1_50'
+    label:
+      en_US: '1_50'
+  - value: '51_250'
+    label:
+      en_US: '51_250'
+  - value: '251_1000'
+    label:
+      en_US: '251_1000'
+  - value: '1001_10000'
+    label:
+      en_US: '1001_10000'
+  - value: 10001_plus
+    label:
+      en_US: 10001_plus
+  human_description:
+    en_US: 'The company''s own online store offers this many products, as a band. One of: 1_50 (1 to 50 products), 51_250 (51 to 250 products), 251_1000 (251 to 1,000 products), 1001_10000 (1,001 to 10,000 products), 10001_plus (More than 10,000 products).'
+  llm_description: 'The company''s own online store offers this many products, as a band. One of: 1_50 (1 to 50 products), 51_250 (51 to 250 products), 251_1000 (251 to 1,000 products), 1001_10000 (1,001 to 10,000 products), 10001_plus (More than 10,000 products).'
+- name: store_products_added
+  required: false
+  form: llm
+  label:
+    en_US: Store products added
+  type: select
+  options:
+  - value: '1'
+    label:
+      en_US: '1'
+  - value: '10'
+    label:
+      en_US: '10'
+  - value: '100'
+    label:
+      en_US: '100'
+  human_description:
+    en_US: 'Products added to the company''s own online store in the last 30 days, at least, as a string. One of: 1 (At least 1 product), 10 (10 products or more), 100 (100 products or more).'
+  llm_description: 'Products added to the company''s own online store in the last 30 days, at least, as a string. One of: 1 (At least 1 product), 10 (10 products or more), 100 (100 products or more).'
+- name: store_on_discount
+  required: false
+  form: llm
+  label:
+    en_US: Store on discount
+  type: select
+  options:
+  - value: '10'
+    label:
+      en_US: '10'
+  - value: '25'
+    label:
+      en_US: '25'
+  - value: '50'
+    label:
+      en_US: '50'
+  human_description:
+    en_US: 'The share of the products of the company''s own online store on discount, at least, in percent, as a string. One of: 10 (10% or more of products), 25 (25% or more of products), 50 (50% or more of products).'
+  llm_description: 'The share of the products of the company''s own online store on discount, at least, in percent, as a string. One of: 10 (10% or more of products), 25 (25% or more of products), 50 (50% or more of products).'
+- name: store_price_move
+  required: false
+  form: llm
+  label:
+    en_US: Store price move
+  type: select
+  options:
+  - value: raised
+    label:
+      en_US: raised
+  - value: cut
+    label:
+      en_US: cut
+  - value: any
+    label:
+      en_US: any
+  human_description:
+    en_US: 'The company''s own online store raised or cut its regular prices in the last 90 days, measured on the same products from one weekly read to a later one. One of: raised (Prices raised in the last 90 days), cut (Prices cut in the last 90 days), any (Prices raised or cut in the last 90 days).'
+  llm_description: 'The company''s own online store raised or cut its regular prices in the last 90 days, measured on the same products from one weekly read to a later one. One of: raised (Prices raised in the last 90 days), cut (Prices cut in the last 90 days), any (Prices raised or cut in the last 90 days).'
+- name: email_provider
+  required: false
+  form: llm
+  label:
+    en_US: Email provider
+  type: select
+  options:
+  - value: google_workspace
+    label:
+      en_US: google_workspace
+  - value: microsoft_365
+    label:
+      en_US: microsoft_365
+  - value: zoho_mail
+    label:
+      en_US: zoho_mail
+  - value: other
+    label:
+      en_US: other
+  - value: none
+    label:
+      en_US: none
+  human_description:
+    en_US: 'The mail service the domain of the company''s main website receives its mail through, from its public mail records. One of: google_workspace (Google Workspace), microsoft_365 (Microsoft 365), zoho_mail (Zoho Mail), other (Another mail service), none (No mail on the domain).'
+  llm_description: 'The mail service the domain of the company''s main website receives its mail through, from its public mail records. One of: google_workspace (Google Workspace), microsoft_365 (Microsoft 365), zoho_mail (Zoho Mail), other (Another mail service), none (No mail on the domain).'
+- name: email_security
+  required: false
+  form: llm
+  label:
+    en_US: Email security
+  type: select
+  options:
+  - value: enforced
+    label:
+      en_US: enforced
+  - value: reject
+    label:
+      en_US: reject
+  - value: quarantine
+    label:
+      en_US: quarantine
+  - value: monitoring
+    label:
+      en_US: monitoring
+  - value: none
+    label:
+      en_US: none
+  - value: unenforced
+    label:
+      en_US: unenforced
+  human_description:
+    en_US: 'The DMARC policy the domain publishes for mail that claims to come from it and fails the checks. One of: enforced (Enforced: rejects or quarantines), reject (Rejects spoofed mail), quarantine (Quarantines spoofed mail), monitoring (Monitoring only (p=none)), none (No DMARC policy), unenforced (Not enforced: monitoring or none).'
+  llm_description: 'The DMARC policy the domain publishes for mail that claims to come from it and fails the checks. One of: enforced (Enforced: rejects or quarantines), reject (Rejects spoofed mail), quarantine (Quarantines spoofed mail), monitoring (Monitoring only (p=none)), none (No DMARC policy), unenforced (Not enforced: monitoring or none).'
+- name: domain_age
+  required: false
+  form: llm
+  label:
+    en_US: Domain age
+  type: select
+  options:
+  - value: under_1
+    label:
+      en_US: under_1
+  - value: '1_5'
+    label:
+      en_US: '1_5'
+  - value: '5_10'
+    label:
+      en_US: '5_10'
+  - value: '10_20'
+    label:
+      en_US: '10_20'
+  - value: 20_plus
+    label:
+      en_US: 20_plus
+  human_description:
+    en_US: 'How long ago the domain of the company''s main website was registered, from the registry''s public record. One of: under_1 (Less than a year), 1_5 (1 to 5 years), 5_10 (5 to 10 years), 10_20 (10 to 20 years), 20_plus (More than 20 years). Some registries do not state the date.'
+  llm_description: 'How long ago the domain of the company''s main website was registered, from the registry''s public record. One of: under_1 (Less than a year), 1_5 (1 to 5 years), 5_10 (5 to 10 years), 10_20 (10 to 20 years), 20_plus (More than 20 years). Some registries do not state the date.'
 extra:
   python:
     source: tools/count_companies.py

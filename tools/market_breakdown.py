@@ -8,7 +8,7 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 from tools import fokals_api
 
-READINGS = {"agent_ready_min": "whole", "agent_ready_part_min": "whole", "project_days": "whole", "limit": "whole"}
+READINGS = {"agent_ready_min": "whole", "agent_ready_part_min": "whole", "project_days": "whole", "announced_within_days": "whole", "changed_within_days": "whole", "limit": "whole"}
 
 
 class MarketBreakdownTool(Tool):

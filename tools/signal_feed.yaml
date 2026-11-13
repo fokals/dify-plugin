@@ -7,7 +7,7 @@ identity:
 description:
   human:
     en_US: 'Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signa...'
-  llm: 'Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signal it is and the buying topics it points to. Narrow it to one buying topic or one kind of source. Use it to watch a topic for new interest as it appears, or to build a list from fresh signals. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
+  llm: 'Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signal it is and the buying topics it points to. Narrow it to one buying topic, one kind of source or a technology the signal names, and by the company behind it: its industry, business model, country, website traffic, head count, listing, health and intent score. Use it to watch a topic for new interest as it appears, or to build a list from fresh signals. Paid from the Fokals prepaid balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.'
 parameters:
 - name: since
   required: false
@@ -52,6 +52,151 @@ parameters:
   human_description:
     en_US: 'Only signals of this kind: site (the website), dns (the domain records), careers (job ads), filing (regulatory filings), news (announcements).'
   llm_description: 'Only signals of this kind: site (the website), dns (the domain records), careers (job ads), filing (regulatory filings), news (announcements).'
+- name: technology
+  required: false
+  form: llm
+  label:
+    en_US: Technology
+  type: string
+  human_description:
+    en_US: 'Only signals that name this technology, by name: "HubSpot" added to or removed from a website, or named in a job ad.'
+  llm_description: 'Only signals that name this technology, by name: "HubSpot" added to or removed from a website, or named in a job ad.'
+- name: industry
+  required: false
+  form: llm
+  label:
+    en_US: Industry
+  type: string
+  human_description:
+    en_US: 'One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+  llm_description: 'One of: fashion_apparel, beauty_personal_care, health_wellness, food_beverage, home_garden, consumer_electronics, software_saas, finance_insurance, education, travel_hospitality, automotive, real_estate, entertainment_media, gaming, sports_outdoors, retail_marketplace, professional_services, telecom_utilities, nonprofit_public, pets, other.'
+- name: business_model
+  required: false
+  form: llm
+  label:
+    en_US: Business model
+  type: string
+  human_description:
+    en_US: 'One of: b2b, b2c, both.'
+  llm_description: 'One of: b2b, b2c, both.'
+- name: country
+  required: false
+  form: llm
+  label:
+    en_US: Country
+  type: string
+  human_description:
+    en_US: 'A country as a two-letter code: US, GB, DE. Matches the head office''s country where it is known, otherwise the main market the company''s website serves: country and market_country in an answer.'
+  llm_description: 'A country as a two-letter code: US, GB, DE. Matches the head office''s country where it is known, otherwise the main market the company''s website serves: country and market_country in an answer.'
+- name: website_traffic
+  required: false
+  form: llm
+  label:
+    en_US: Website traffic
+  type: select
+  options:
+  - value: '10000'
+    label:
+      en_US: '10000'
+  - value: '100000'
+    label:
+      en_US: '100000'
+  - value: '1000000'
+    label:
+      en_US: '1000000'
+  - value: '10000000'
+    label:
+      en_US: '10000000'
+  human_description:
+    en_US: 'The company''s website is among the most visited websites in the world in the latest month held, as a string. One of: 10000 (Top 10,000 websites), 100000 (Top 100,000 websites), 1000000 (Top 1 million websites), 10000000 (Top 10 million websites).'
+  llm_description: 'The company''s website is among the most visited websites in the world in the latest month held, as a string. One of: 10000 (Top 10,000 websites), 100000 (Top 100,000 websites), 1000000 (Top 1 million websites), 10000000 (Top 10 million websites).'
+- name: headcount
+  required: false
+  form: llm
+  label:
+    en_US: Headcount
+  type: select
+  options:
+  - value: '1_10'
+    label:
+      en_US: '1_10'
+  - value: '11_50'
+    label:
+      en_US: '11_50'
+  - value: '51_200'
+    label:
+      en_US: '51_200'
+  - value: '201_1000'
+    label:
+      en_US: '201_1000'
+  - value: '1001_5000'
+    label:
+      en_US: '1001_5000'
+  - value: 5001_plus
+    label:
+      en_US: 5001_plus
+  human_description:
+    en_US: 'The company''s stated head count, as a band. One of: 1_10 (1 to 10 people), 11_50 (11 to 50 people), 51_200 (51 to 200 people), 201_1000 (201 to 1,000 people), 1001_5000 (1,001 to 5,000 people), 5001_plus (More than 5,000 people). Known for a small share of companies, mostly listed ones.'
+  llm_description: 'The company''s stated head count, as a band. One of: 1_10 (1 to 10 people), 11_50 (11 to 50 people), 51_200 (51 to 200 people), 201_1000 (201 to 1,000 people), 1001_5000 (1,001 to 5,000 people), 5001_plus (More than 5,000 people). Known for a small share of companies, mostly listed ones.'
+- name: listed
+  required: false
+  form: llm
+  label:
+    en_US: Listed
+  type: boolean
+  human_description:
+    en_US: true keeps only companies with a stock exchange listing, their own or a parent's.
+  llm_description: true keeps only companies with a stock exchange listing, their own or a parent's.
+- name: not_listed
+  required: false
+  form: llm
+  label:
+    en_US: Not listed
+  type: boolean
+  human_description:
+    en_US: 'true keeps only private companies: no listing of their own or a parent''s.'
+  llm_description: 'true keeps only private companies: no listing of their own or a parent''s.'
+- name: health_band
+  required: false
+  form: llm
+  label:
+    en_US: Health band
+  type: select
+  options:
+  - value: distress
+    label:
+      en_US: distress
+  - value: watch
+    label:
+      en_US: watch
+  - value: growing
+    label:
+      en_US: growing
+  - value: breakout
+    label:
+      en_US: breakout
+  human_description:
+    en_US: 'The company''s health in the latest week: distress (signs of distress), watch (worth watching), growing or breakout (breaking out).'
+  llm_description: 'The company''s health in the latest week: distress (signs of distress), watch (worth watching), growing or breakout (breaking out).'
+- name: intent_score_min
+  required: false
+  form: llm
+  label:
+    en_US: Intent score min
+  type: select
+  options:
+  - value: '50'
+    label:
+      en_US: '50'
+  - value: '70'
+    label:
+      en_US: '70'
+  - value: '90'
+    label:
+      en_US: '90'
+  human_description:
+    en_US: 'The least intent score, as a string, of the company''s top buying topic in its latest scored week: 50, 70, 90 (of 100).'
+  llm_description: 'The least intent score, as a string, of the company''s top buying topic in its latest scored week: 50, 70, 90 (of 100).'
 - name: limit
   required: false
   form: llm
