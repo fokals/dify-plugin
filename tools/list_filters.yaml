@@ -6,8 +6,8 @@ identity:
     en_US: List filter values
 description:
   human:
-    en_US: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the he...'
-  llm: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the head office''s country where it is known, otherwise the main market the company''s website serves), and the types of announcement. Also what market_trends and market_movers can measure, with how each can be cut and its subjects, and the sales roles. Free.'
+    en_US: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name, or narrow them as the Technologies page does: by category, catalo...'
+  llm: 'Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name, or narrow them as the Technologies page does: by category, catalogue, least companies, weekly series and predicted next adoption), buying topics, industries, business models, countries (by the head office''s country where it is known, otherwise the main market the company''s website serves), the types of announcement and the technologies a likely next adoption is predicted for (likely_next).'
 parameters:
 - name: kind
   required: true
@@ -40,6 +40,12 @@ parameters:
   - value: sales_roles
     label:
       en_US: sales_roles
+  - value: likely_next
+    label:
+      en_US: likely_next
+  - value: company_labels
+    label:
+      en_US: company_labels
   human_description:
     en_US: Which list to return.
   llm_description: Which list to return.
@@ -63,6 +69,60 @@ parameters:
   human_description:
     en_US: How many to return. 50 unless given.
   llm_description: How many to return. 50 unless given.
+- name: category
+  required: false
+  form: llm
+  label:
+    en_US: Category
+  type: string
+  human_description:
+    en_US: 'With kind technologies: only technologies of this category, as each technology in the list gives it ("analytics", "crm").'
+  llm_description: 'With kind technologies: only technologies of this category, as each technology in the list gives it ("analytics", "crm").'
+- name: catalogue
+  required: false
+  form: llm
+  label:
+    en_US: Catalogue
+  type: select
+  options:
+  - value: ours
+    label:
+      en_US: ours
+  - value: open
+    label:
+      en_US: open
+  human_description:
+    en_US: 'With kind technologies: ours (the Fokals catalogue) or open (the open catalogue).'
+  llm_description: 'With kind technologies: ours (the Fokals catalogue) or open (the open catalogue).'
+- name: min_companies
+  required: false
+  form: llm
+  label:
+    en_US: Min companies
+  type: number
+  min: 1
+  max: 100000000
+  human_description:
+    en_US: 'With kind technologies: only technologies at least this many companies run now.'
+  llm_description: 'With kind technologies: only technologies at least this many companies run now.'
+- name: weekly_series
+  required: false
+  form: llm
+  label:
+    en_US: Weekly series
+  type: boolean
+  human_description:
+    en_US: 'With kind technologies: true for only the technologies with weekly market series (their changes count for intent), false for only those without.'
+  llm_description: 'With kind technologies: true for only the technologies with weekly market series (their changes count for intent), false for only those without.'
+- name: predicted_next
+  required: false
+  form: llm
+  label:
+    en_US: Predicted next
+  type: boolean
+  human_description:
+    en_US: 'With kind technologies: true for only the technologies a likely next adoption is predicted for in the latest week.'
+  llm_description: 'With kind technologies: true for only the technologies a likely next adoption is predicted for in the latest week.'
 extra:
   python:
     source: tools/list_filters.py
